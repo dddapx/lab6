@@ -7,7 +7,7 @@ public abstract class AbstractDAO {
 
     private Connection openConnection(){
         Connection conn = DriverManager.getConnection(
-         "j"atabaseURL+"INIT-"+ createTable, "admin", "admin"
+         "jdbc:postgre" + databaseURL + "INIT-" + createTable, "admin", "admin"
         );
         return conn;
     }
