@@ -3,11 +3,23 @@ import java.sql.*;
 import java.util.List;
 
 public abstract class AbstractDAO {
-    String databaseURL = "";
+    protected String createTable;
+
+    public AbstractDAO (){
+        this.createTable = "CREATE TABLE IF NOT EXISTS Agendamento (" +
+                           "id SERIAL PRIMARY KEY, " +
+                           "horario VARCHAR(255), " +
+                           "dia VARCHAR(255), " +
+                           "paciente_id INT, " +
+                           "FOREIGN KEY (paciente_id) REFERENCES Paciente(id))";
+    }
 
     private Connection openConnection(){
+        String databaseURL = "jdbc:postgresql://aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require&prepareThreshold=0";
+        String user = "postgres.rwjcyfaonycwwdhdjlle";
+        String password = "isAMAiDCS15tJFer";
         Connection conn = DriverManager.getConnection(
-         "jdbc:postgre" + databaseURL + "INIT-" + createTable, "admin", "admin"
+         "jdbc:postgresql://localhost:5432/nome_do_banco" + databaseURL + "INIT-" + createTable, user, password
         );
         return conn;
     }
