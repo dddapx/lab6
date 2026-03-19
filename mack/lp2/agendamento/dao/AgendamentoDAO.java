@@ -62,9 +62,8 @@ public class AgendamentoDAO extends AbstractDAO{
 
     @Override
     public Object read(int id) throws SQLException {
-        String sql = "SELECT a.id, a.horario, a.dia, p.id AS id_paciente, p.nome " +
-                     "FROM Agendamento a INNER JOIN Paciente p ON a.paciente_id = p.id " +
-                     "WHERE a.id = ?";
+        String sql = "SELECT a.id, a.horario, a.dia, p.id AS id_paciente, p.nome, p.data_nascimento " +
+                     "FROM Agendamento a INNER JOIN Paciente p ON a.paciente_id = p.id";
                      
         try (Connection conn = openConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -72,7 +71,7 @@ public class AgendamentoDAO extends AbstractDAO{
             ResultSet rs = stmt.executeQuery();
             
             if (rs.next()) {
-                Paciente p = new Paciente(rs.getInt("id_paciente"), rs.getString("nome"));
+                Paciente p = new Paciente(rs.getInt("id_paciente"), rs.getString("nome"), rs.getString("data_nascimento"));
                 return new Agendamento(rs.getInt("id"), rs.getString("horario"), rs.getString("dia"), p);
             }
         }
@@ -82,7 +81,7 @@ public class AgendamentoDAO extends AbstractDAO{
     @Override
     public java.util.List<Object> readAll() throws SQLException {
         java.util.List<Object> lista = new java.util.ArrayList<>();
-        String sql = "SELECT a.id, a.horario, a.dia, p.id AS id_paciente, p.nome " +
+        String sql = "SELECT a.id, a.horario, a.dia, p.id AS id_paciente, p.nome, p.data_nascimento " +
                      "FROM Agendamento a INNER JOIN Paciente p ON a.paciente_id = p.id";
                      
         try (Connection conn = openConnection();
@@ -90,7 +89,7 @@ public class AgendamentoDAO extends AbstractDAO{
              ResultSet rs = stmt.executeQuery(sql)) {
              
             while (rs.next()) {
-                Paciente p = new Paciente(rs.getInt("id_paciente"), rs.getString("nome"));
+                Paciente p = new Paciente(rs.getInt("id_paciente"), rs.getString("nome"), rs.getString("data_nascimento"));
                 lista.add(new Agendamento(rs.getInt("id"), rs.getString("horario"), rs.getString("dia"), p));
             }
         }

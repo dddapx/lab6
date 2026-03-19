@@ -14,8 +14,9 @@ public class PacienteDAO extends AbstractDAO{
     public Object create(Object obj) throws SQLException {
         Paciente p = (Paciente) obj;
         try (Connection conn = openConnection();
-             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Paciente (nome) VALUES (?)", Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Paciente (nome, data_nascimento) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, p.getNome());
+            stmt.setDate(2, java.sql.Date.valueOf(p.getDataNascimento()));
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) p.setId(rs.getInt(1));
@@ -29,7 +30,7 @@ public class PacienteDAO extends AbstractDAO{
         try (Connection conn = openConnection();
              ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM Paciente")) {
             while (rs.next()) {
-                lista.add(new Paciente(rs.getInt("id"), rs.getString("nome")));
+                lista.add(new Paciente(rs.getInt("id"), rs.getString("nome"), rs.getString("data_nascimento").toString()));
             }
         }
         return lista;
@@ -62,7 +63,7 @@ public class PacienteDAO extends AbstractDAO{
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Paciente WHERE id = ?")) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()) return new Paciente(rs.getInt("id"), rs.getString("nome"));
+            if (rs.next()) return new Paciente(rs.getInt("id"), rs.getString("nome"), rs.getString("data_nascimento").toString());
         }
         return null;
     }

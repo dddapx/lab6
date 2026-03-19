@@ -13,6 +13,13 @@ public abstract class AbstractDAO {
         return DriverManager.getConnection(url, user, password);
     }
 
+    public void initTable() throws SQLException {
+        try (Connection conn = openConnection();
+            Statement stmt = conn.createStatement()) {
+            stmt.execute(this.createTable);
+        }
+    }
+
     public abstract Object create(Object obj) throws SQLException;
     public abstract Object read(int idj) throws SQLException;
     public abstract List<Object> readAll() throws SQLException;

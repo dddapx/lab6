@@ -5,17 +5,26 @@ import mack.lp2.agendamento.dao.AgendamentoDAO;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        PacienteDAO pDao = new PacienteDAO();
-        AgendamentoDAO aDao = new AgendamentoDAO();
+        PacienteDAO pacDao = new PacienteDAO();
+        AgendamentoDAO agDao = new AgendamentoDAO();
 
-        Paciente p1 = new Paciente(0, "Davi Barros");
+        pacDao.initTable();
+        agDao.initTable();
+
+        Paciente p1 = new Paciente(0, "Davi Barros", "2000-11-05");
         
-        pDao.create(p1); 
+        pacDao.create(p1); 
         System.out.println("Paciente salva com ID: " + p1.getId());
 
         Agendamento consulta = new Agendamento(0, "15:00", "20/03/2026", p1);
-        aDao.create(consulta);
+        agDao.create(consulta);
         
         System.out.println("Agendamento realizado!");
+
+        System.out.println("\nLista de Agendamentos no Banco:");
+        for (Object obj : agDao.readAll()) {
+            Agendamento ag = (Agendamento) obj;
+            System.out.println("Dia: " + ag.getDia() + " | Hora: " + ag.getHorario() + " | Paciente: " + ag.getPaciente().getNome());
+        }
     }
 }
