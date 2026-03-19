@@ -6,7 +6,7 @@ public class Agendamento {
     private String dia;
     private Paciente paciente;
 
-    public Agendamento(int id, String horario, String dia) {
+    public Agendamento(int id, String horario, String dia, Paciente paciente) {
         this.id = id;
         this.horario = horario;
         this.dia = dia;
